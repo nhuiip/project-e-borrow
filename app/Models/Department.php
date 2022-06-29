@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection|DurableGood[] $durable_goods
  * @property Collection|Location[] $locations
  * @property Collection|Parcel[] $parcels
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
@@ -57,5 +58,10 @@ class Department extends Model
 	public function parcels()
 	{
 		return $this->hasMany(Parcel::class, 'departmentId');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class, 'departmentId');
 	}
 }

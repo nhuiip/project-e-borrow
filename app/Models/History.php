@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int|null $durablegoodsId
  * @property int|null $parcelId
- * @property int $type
- * @property int $status
+ * @property int $typeId
+ * @property int $statusId
  * @property int $unit
  * @property int|null $approved_userId
  * @property Carbon|null $approved_at
@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property DurableGood|null $durable_good
  * @property Parcel|null $parcel
+ * @property HistoryStatus $history_status
+ * @property HistoryType $history_type
  *
  * @package App\Models
  */
@@ -38,8 +40,8 @@ class History extends Model
 	protected $casts = [
 		'durablegoodsId' => 'int',
 		'parcelId' => 'int',
-		'type' => 'int',
-		'status' => 'int',
+		'typeId' => 'int',
+		'statusId' => 'int',
 		'unit' => 'int',
 		'approved_userId' => 'int',
 		'returned_userId' => 'int',
@@ -54,8 +56,8 @@ class History extends Model
 	protected $fillable = [
 		'durablegoodsId',
 		'parcelId',
-		'type',
-		'status',
+		'typeId',
+		'statusId',
 		'unit',
 		'approved_userId',
 		'approved_at',
@@ -72,5 +74,15 @@ class History extends Model
 	public function parcel()
 	{
 		return $this->belongsTo(Parcel::class, 'parcelId');
+	}
+
+	public function history_status()
+	{
+		return $this->belongsTo(HistoryStatus::class, 'statusId');
+	}
+
+	public function history_type()
+	{
+		return $this->belongsTo(HistoryType::class, 'typeId');
 	}
 }

@@ -16,32 +16,25 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					<select name="facultyId" id="facultyId" class="form-control form-control-border border-width-2"
-						@if (!Auth::user()->isAdmin()) disabled @endif
-						onchange="getDepartment(this)">
-						@if (Auth::user()->isAdmin())
-							<option value="">คณะ</option>
-						@endif
-						@foreach ($faculty as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
-				</div>
-				<div class="col-md-3">
 					<select name="departmentId" id="departmentId" class="form-control form-control-border border-width-2"
 						@if (!Auth::user()->isAdmin()) disabled @endif
 						onchange="loadFilter(this)">
 						@if (Auth::user()->isAdmin())
 							<option value="">สาขาวิชา</option>
-						@endif
-						@if (!Auth::user()->isAdmin())
 							@foreach ($department as $key => $value)
-								<option value="{{ $value->id }}">{{ $value->name }}</option>
+								<optgroup label="{{ $value->name }}">
+									@foreach ($value->departments as $key => $item)
+										<option value="{{ $item->id }}">{{ $item->name }}</option>
+									@endforeach
+								</optgroup>
 							@endforeach
 						@endif
+						@foreach ($department as $key => $value)
+							<option value="{{ $value->id }}">{{ $value->name }}</option>
+						@endforeach
 					</select>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-3">
 					<select name="roleId" id="roleId" class="form-control form-control-border border-width-2"
 						onchange="loadFilter(this)">
 						<option value="">บทบาทผู้ใช้</option>
@@ -67,7 +60,6 @@
 							<th>ลำดับ</th>
 							<th>ชื่อ-นามสกุล</th>
 							<th>อีเมล</th>
-							<th>คณะ</th>
 							<th>สาขาวิชา</th>
 							<th>บทบาทผู้ใช้</th>
 							<th>เพิ่มข้อมูล</th>
@@ -140,7 +132,6 @@
 	   url: $('#data-table').attr('data-url'),
 	   type: "GET",
 	   data: function(d) {
-	    d.facultyId = $('#facultyId').val();
 	    d.departmentId = $('#departmentId').val();
 	    d.roleId = $('#roleId').val();
 	   },
@@ -153,23 +144,23 @@
 	   },
 	   {
 	    'targets': [1, 2],
-	    'width': '10%',
 	   },
 	   {
-	    'targets': [3, 4],
+	    'targets': [3],
+	    'width': '15%',
 	   },
 	   {
-	    'targets': [5],
-	    'width': '10%',
-	    'className': 'text-center',
-	   },
-	   {
-	    'targets': [6, 7],
+	    'targets': [4],
 	    'width': '10%',
 	    'className': 'text-center',
 	   },
 	   {
-	    'targets': [8],
+	    'targets': [5, 6],
+	    'width': '10%',
+	    'className': 'text-center',
+	   },
+	   {
+	    'targets': [7],
 	    'width': '5%',
 	    'className': 'text-center',
 	   }
@@ -184,10 +175,7 @@
 	    data: 'email'
 	   },
 	   {
-	    data: 'facultyId'
-	   },
-	   {
-	    data: 'departmentId'
+	    data: 'department_name'
 	   },
 	   {
 	    data: 'roleId'
@@ -208,30 +196,6 @@
 	<script>
 	 function loadFilter(e) {
 	  DataTable.ajax.reload();
-	 }
-
-     function getDepartment(e) {
-	  $.ajax({
-	   type: "GET",
-	   url: '{!! route('department.getdepartment') !!}',
-	   data: {
-	    facultyId: $(e).val()
-	   },
-	   cache: false,
-	   beforeSend: function() {
-	    loadFilter()
-	    $("#departmentId").html('<option value="">สาขาวิชา</option>');
-	   },
-	   success: function(response) {
-	    if (response.length != 0) {
-	     $.each(response, function(index, item) {
-	      $("#departmentId").append(
-	       '<option value="' + item.id + '">' + item.name + "</option>"
-	      );
-	     });
-	    }
-	   },
-	  });
 	 }
 
 	 function fncAction(e) {

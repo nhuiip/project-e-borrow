@@ -20,7 +20,7 @@
 						:</label>
 					<div class="col-sm-12">
 						<div class="form-group">
-							{{ Form::select('roleId', $role, old('roleId'), ['class' => 'form-control', 'required', 'onchange' => 'IsAdmin(this)']) }}
+							{{ Form::select('roleId', $role, old('roleId'), ['id' => 'roleId', 'class' => 'form-control', 'required', 'onchange' => 'IsAdmin(this)']) }}
 							@error('roleId')
 								<small class="text-danger">{{ $message }}</small>
 							@enderror
@@ -37,11 +37,12 @@
 							<label for="permission_0" class="custom-control-label"
 								style="font-weight:400">เลือกทั้งหมด</label>
 						</div>
+						<hr>
 						@foreach ($permission as $key => $value)
 							<div class="custom-control custom-checkbox">
 								<input class="custom-control-input permission" type="checkbox" name="permission[]"
 									id="permission_{{ $value->id }}"
-									value="{{ $value->id }}">
+									value="{{ $value->id }}" @if (!empty($user) && $user->can($value->name)) checked @endif>
 								<label for="permission_{{ $value->id }}" class="custom-control-label"
 									style="font-weight:400">{{ $value->name_th }}</label>
 							</div>
@@ -51,24 +52,16 @@
 				</div>
 				<div class="col-sm-9">
 					<div class="row">
-						<div class="col-md-6">
-							<label class="col-sm-12 col-form-label"><span class="text-danger">*</span>คณะ
-								:</label>
-							<div class="col-sm-12">
-								<div class="form-group">
-									{{ Form::select('facultyId', $faculty, old('facultyId'), ['id' => 'facultyId', 'class' => 'form-control', 'required']) }}
-									@error('facultyId')
-										<small class="text-danger">{{ $message }}</small>
-									@enderror
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
+						<div class="col-sm-12">
 							<label class="col-sm-12 col-form-label"><span class="text-danger">*</span>สาขาวิชา
 								:</label>
 							<div class="col-sm-12">
 								<div class="form-group">
-									{{ Form::select('departmentId', $department, old('departmentId'), ['id' => 'departmentId', 'class' => 'form-control', 'required']) }}
+									@if (old('roleId') == 1)
+										{{ Form::select('departmentId', $department, old('departmentId'), ['id' => 'departmentId', 'class' => 'form-control']) }}
+									@else
+										{{ Form::select('departmentId', $department, old('departmentId'), ['id' => 'departmentId', 'required', 'class' => 'form-control']) }}
+									@endif
 									@error('departmentId')
 										<small class="text-danger">{{ $message }}</small>
 									@enderror
@@ -135,7 +128,7 @@
 				</div>
 				<div class="col-6 col-md-6">
 					<button type="submit" class="btn btn-success float-right" name="action"
-						value="save">บันทึกข้อมูล</button>
+						value="user form">บันทึกข้อมูล</button>
 				</div>
 			</div>
 		</div>
@@ -147,9 +140,11 @@
 	<script>
 	 onloadPage();
 
-	 function onloadPage(e) {
-	  if (!$('#isAdmin').val()) {
-	   $("#facultyId").prop("disabled", true);
+	 function onloadPage() {
+	  let roleId = $('#roleId').val()
+	  if (roleId == 1) {
+	   $(".permission").prop("checked", true);
+	   $(".permission").prop("disabled", true);
 	   $("#departmentId").prop("disabled", true);
 	  }
 	 }
@@ -158,12 +153,10 @@
 	  if ($(e).val() == 1) {
 	   $(".permission").prop("checked", true);
 	   $(".permission").prop("disabled", true);
-	   $("#facultyId").prop("disabled", true);
 	   $("#departmentId").prop("disabled", true);
 	  } else {
 	   $(".permission").prop("checked", false);
 	   $(".permission").prop("disabled", false);
-	   $("#facultyId").prop("disabled", false);
 	   $("#departmentId").prop("disabled", false);
 	  }
 	 }

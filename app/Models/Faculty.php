@@ -19,9 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  * 
  * @property Collection|Department[] $departments
- * @property Collection|DurableGood[] $durable_goods
- * @property Collection|Location[] $locations
- * @property Collection|Parcel[] $parcels
  *
  * @package App\Models
  */
@@ -36,20 +33,5 @@ class Faculty extends Model
 	public function departments()
 	{
 		return $this->hasMany(Department::class, 'facultyId');
-	}
-
-	public function durable_goods()
-	{
-		return $this->hasMany(DurableGood::class, 'facultyId');
-	}
-
-	public function locations()
-	{
-		return $this->hasMany(Location::class, 'facultyId');
-	}
-
-	public function parcels()
-	{
-		return $this->hasMany(Parcel::class, 'facultyId');
 	}
 }

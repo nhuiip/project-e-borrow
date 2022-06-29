@@ -14,35 +14,23 @@
 	<div class="card">
 		<div class="card-body">
 			<div class="row">
-				<label class="col-sm-12 col-form-label"><span class="text-danger">*</span>ชื่อ:</label>
-				<div class="col-sm-12">
-					<div class="form-group">
-						{{ Form::text('name', old('name'), ['class' => 'form-control', 'required', 'placeholder' => 'กรุณากรอกชื่อ']) }}
-						@error('name')
-							<small class="text-danger">{{ $message }}</small>
-						@enderror
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<label class="col-sm-12 col-form-label">คณะ
-						:</label>
+				<div class="col-sm-6">
+					<label class="col-sm-12 col-form-label"><span class="text-danger">*</span>ชื่อ:</label>
 					<div class="col-sm-12">
 						<div class="form-group">
-							{{ Form::select('facultyId', $faculty, old('facultyId'), ['id' => 'facultyId', 'class' => 'form-control', 'onchange' => 'getDepartment(this)']) }}
-							@error('facultyId')
+							{{ Form::text('name', old('name'), ['class' => 'form-control', 'required', 'placeholder' => 'กรุณากรอกชื่อ']) }}
+							@error('name')
 								<small class="text-danger">{{ $message }}</small>
 							@enderror
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<label class="col-sm-12 col-form-label">สาขาวิชา
+				<div class="col-sm-6">
+					<label class="col-sm-12 col-form-label"><span class="text-danger">*</span>สาขาวิชา
 						:</label>
 					<div class="col-sm-12">
 						<div class="form-group">
-							{{ Form::select('departmentId', $department, old('departmentId'), ['id' => 'departmentId', 'class' => 'form-control']) }}
+							{{ Form::select('departmentId', $department, old('departmentId'), ['id' => 'departmentId', 'required', 'class' => 'form-control']) }}
 							@error('departmentId')
 								<small class="text-danger">{{ $message }}</small>
 							@enderror
@@ -53,10 +41,10 @@
 		</div>
 		<div class="card-footer">
 			<div class="row">
-				<div class="col-6 col-md-6">
+				<div class="col-6 col-sm-6">
 					<button type="reset" class="btn btn-secondary">ล้างข้อมูล</button>
 				</div>
-				<div class="col-6 col-md-6">
+				<div class="col-6 col-sm-6">
 					<button type="submit" class="btn btn-success float-right" name="action"
 						value="save">บันทึกข้อมูล</button>
 				</div>
@@ -64,31 +52,4 @@
 		</div>
 	</div>
 	{!! Form::close() !!}
-@endsection
-
-@section('javascript')
-	<script>
-	 function getDepartment(e) {
-	  $.ajax({
-	   type: "GET",
-	   url: '{!! route('department.getdepartment') !!}',
-	   data: {
-	    facultyId: $(e).val()
-	   },
-	   cache: false,
-	   beforeSend: function() {
-	    $("#departmentId").html('<option value="">เลือกสาขาวิชา</option>');
-	   },
-	   success: function(response) {
-	    if (response.length != 0) {
-	     $.each(response, function(index, item) {
-	      $("#departmentId").append(
-	       '<option value="' + item.id + '">' + item.name + "</option>"
-	      );
-	     });
-	    }
-	   },
-	  });
-	 }
-	</script>
 @endsection

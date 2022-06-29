@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ParcelImage;
 use Illuminate\Http\Request;
 
 class ParcelImageController extends Controller
@@ -79,6 +80,11 @@ class ParcelImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = ParcelImage::findOrFail($id);
+        // delete old-file
+        @unlink(storage_path() . '/app/public/storage/ParcelImage/', $data->image);
+        $data->delete();
+
+        return back()->with('toast_success', 'ลบข้อมูลเรียบร้อยแล้ว!');
     }
 }

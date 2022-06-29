@@ -24,6 +24,10 @@
 			padding: 0.99rem 0.5rem;
 		}
 
+		table.table-bordered.dataTable tbody td {
+			border-bottom-width: 0;
+			vertical-align: middle !important;
+		}
 	</style>
 </head>
 
@@ -42,7 +46,7 @@
 						{{ Auth::user()->name }}
 					</a>
 					<div class="dropdown-menu">
-						<a href="#" class="dropdown-item">
+						<a href="{{ route('user.profile') }}" class="dropdown-item">
 							<i class="fas fa-user mr-2"></i> ข้อมูลส่วนตัว
 						</a>
 						<div class="dropdown-divider"></div>
@@ -72,7 +76,8 @@
 					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 						@can('view dashboard')
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a href="{{ route('dashboard.index') }}"
+									class="nav-link {{ Request::routeIs('dashboard.*') ? 'active' : '' }}">
 									<i class="nav-icon fas fa-tachometer-alt"></i>
 									<p>
 										สรุปผลภาพรวม
@@ -82,7 +87,8 @@
 						@endcan
 						@role('Admin')
 							<li class="nav-item">
-								<a href="{{ route('faculty.index') }}" class="nav-link {{ Request::routeIs('faculty.*') || Request::routeIs('department.*')  ? 'active' : '' }}">
+								<a href="{{ route('faculty.index') }}"
+									class="nav-link {{ Request::routeIs('faculty.*') || Request::routeIs('department.*') ? 'active' : '' }}">
 									<i class="nav-icon fas fa-building"></i>
 									<p>
 										คณะ
@@ -92,7 +98,8 @@
 						@endrole
 						@can('manage location')
 							<li class="nav-item">
-								<a href="{{ route('location.index') }}" class="nav-link {{ Request::routeIs('location.*') ? 'active' : '' }}">
+								<a href="{{ route('location.index') }}"
+									class="nav-link {{ Request::routeIs('location.*') ? 'active' : '' }}">
 									<i class="nav-icon fas fa-box"></i>
 									<p>
 										ที่จัดเก็บพัสดุ-ครุภัณฑ์
@@ -101,7 +108,8 @@
 							</li>
 						@endcan
 
-						<li class="nav-item">
+						<li
+							class="nav-item {{ Request::routeIs('parcel.*') || Request::routeIs('parcelstock.*') || Request::routeIs('history.parcel') ? 'menu-is-opening menu-open' : '' }}">
 							<a href="#" class="nav-link">
 								<i class="nav-icon fas fa-scroll"></i>
 								<p>
@@ -112,21 +120,25 @@
 							<ul class="nav nav-treeview">
 								@can('manage parcel')
 									<li class="nav-item">
-										<a href="#" class="nav-link">
+										<a href="{{ route('parcel.index') }}"
+											class="nav-link {{ (Request::routeIs('parcel.*') || Request::routeIs('parcelstock.*')) && (!Request::routeIs('parcel.withdraw') && !Request::routeIs('parcel.withdraw_form')) ? 'active' : '' }}">
 											<i class="far fa-circle nav-icon"></i>
 											<p>จัดการข้อมูลพัสดุ</p>
 										</a>
 									</li>
 								@endcan
+								{{-- ทุกคนสามารถเบิกได้ --}}
 								<li class="nav-item">
-									<a href="#" class="nav-link">
+									<a href="{{ route('parcel.withdraw') }}"
+										class="nav-link {{ Request::routeIs('parcel.withdraw') || Request::routeIs('parcel.withdraw_form') ? 'active' : '' }}">
 										<i class="far fa-circle nav-icon"></i>
 										<p>เบิกพัสดุ</p>
 									</a>
 								</li>
 								@can('approve return')
 									<li class="nav-item">
-										<a href="#" class="nav-link">
+										<a href="{{ route('history.parcel') }}"
+											class="nav-link {{ Request::routeIs('history.parcel') ? 'active' : '' }}">
 											<i class="far fa-circle nav-icon"></i>
 											<p>รายการรออนุมัติ</p>
 										</a>
@@ -134,7 +146,8 @@
 								@endcan
 							</ul>
 						</li>
-						<li class="nav-item">
+						<li
+							class="nav-item {{ Request::routeIs('durablegood.*') || Request::routeIs('history.durablegood_approve') || Request::routeIs('history.durablegood_return') ? 'menu-is-opening menu-open' : '' }}">
 							<a href="#" class="nav-link">
 								<i class="nav-icon fas fa-boxes"></i>
 								<p>
@@ -145,24 +158,34 @@
 							<ul class="nav nav-treeview">
 								@can('manage durable goods')
 									<li class="nav-item">
-										<a href="#" class="nav-link">
+										<a href="{{ route('durablegood.index') }}"
+											class="nav-link {{ Request::routeIs('durablegood.*') && !Request::routeIs('durablegood.withdraw') ? 'active' : '' }}">
 											<i class="far fa-circle nav-icon"></i>
 											<p>จัดการข้อมูลครุภัณฑ์</p>
 										</a>
 									</li>
 								@endcan
-
+								{{-- ทุกคนสามารถเบิกได้ --}}
 								<li class="nav-item">
-									<a href="#" class="nav-link">
+									<a href="{{ route('durablegood.withdraw') }}"
+										class="nav-link {{ Request::routeIs('durablegood.withdraw') ? 'active' : '' }}">
 										<i class="far fa-circle nav-icon"></i>
 										<p>เบิกครุภัณฑ์</p>
 									</a>
 								</li>
 								@can('approve return')
 									<li class="nav-item">
-										<a href="#" class="nav-link">
+										<a href="{{ route('history.durablegood_approve') }}"
+											class="nav-link {{ Request::routeIs('history.durablegood_approve') ? 'active' : '' }}">
 											<i class="far fa-circle nav-icon"></i>
 											<p>รายการรออนุมัติ</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="{{ route('history.durablegood_return') }}"
+											class="nav-link {{ Request::routeIs('history.durablegood_return') ? 'active' : '' }}">
+											<i class="far fa-circle nav-icon"></i>
+											<p>รายการรอคืน</p>
 										</a>
 									</li>
 								@endcan
@@ -170,7 +193,8 @@
 						</li>
 						@can('view report')
 							<li class="nav-item">
-								<a href="#" class="nav-link">
+								<a href="{{ route('report.index') }}"
+									class="nav-link {{ Request::routeIs('report.*') ? 'active' : '' }}">
 									<i class="nav-icon fas fa-file-excel"></i>
 									<p>
 										รายงาน
@@ -180,7 +204,8 @@
 						@endcan
 						@can('manage user')
 							<li class="nav-item">
-								<a href="{{ route('user.index') }}" class="nav-link {{ Request::routeIs('user.*') ? 'active' : '' }}">
+								<a href="{{ route('user.index') }}"
+									class="nav-link {{ Request::routeIs('user.*') && !Request::routeIs('user.profile') ? 'active' : '' }}">
 									<i class="nav-icon fas fa-user-cog"></i>
 									<p>
 										ข้อมูลผู้ใช้งาน
@@ -216,10 +241,10 @@
 	</script>
 	@yield('javascript')
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.5/dist/sweetalert2.all.min.js"></script>
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11'])
+	@include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11'])
 	<!-- AdminLTE App -->
 	<script src="{{ asset('js/adminlte.min.js') }}"></script>
-    
+
 	<!-- AdminLTE for demo purposes -->
 	{{-- <script src="{{ asset('js/demo.js') }}"></script> --}}
 </body>

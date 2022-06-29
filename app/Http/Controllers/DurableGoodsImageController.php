@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DurableGoodsImage;
+use App\Models\ParcelImage;
 use Illuminate\Http\Request;
 
 class DurableGoodsImageController extends Controller
@@ -79,6 +81,11 @@ class DurableGoodsImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = DurableGoodsImage::findOrFail($id);
+        // delete old-file
+        @unlink(storage_path() . '/app/public/storage/DurableGoodsImage/', $data->image);
+        $data->delete();
+
+        return back()->with('toast_success', 'ลบข้อมูลเรียบร้อยแล้ว!');
     }
 }

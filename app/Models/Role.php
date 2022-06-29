@@ -12,14 +12,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Role
- * 
+ *
  * @property int $id
  * @property string $name
  * @property string $name_th
  * @property string $guard_name
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|ModelHasRole[] $model_has_roles
  * @property Collection|Permission[] $permissions
  *
@@ -27,6 +27,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Role extends Model
 {
+    const Admin = 1;
+    const Officer = 2;
+    const Instructor = 3;
+    const Student = 4;
+
 	protected $table = 'roles';
 
 	protected $fillable = [

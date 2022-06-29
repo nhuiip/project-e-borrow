@@ -7,18 +7,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
  *
  * @property int $id
+ * @property int|null $departmentId
  * @property int $roleId
  * @property string $name
  * @property string $email
@@ -28,10 +24,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
+ * @property Department|null $department
+ *
  * @package App\Models
  */
-
-
 class User extends Authenticatable
 {
     use HasRoles;
@@ -39,7 +35,6 @@ class User extends Authenticatable
     protected $table = 'users';
 
     protected $casts = [
-        'facultyId' => 'int',
         'departmentId' => 'int',
         'roleId' => 'int'
     ];
@@ -54,7 +49,6 @@ class User extends Authenticatable
     ];
 
     protected $fillable = [
-        'facultyId',
         'departmentId',
         'roleId',
         'name',
@@ -63,6 +57,11 @@ class User extends Authenticatable
         'password',
         'remember_token'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'departmentId');
+    }
 
     public function setPasswordAttribute($value)
     {
@@ -76,15 +75,5 @@ class User extends Authenticatable
                 return true;
             }
         }
-    }
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class, 'departmentId');
-    }
-
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class, 'facultyId');
     }
 }
