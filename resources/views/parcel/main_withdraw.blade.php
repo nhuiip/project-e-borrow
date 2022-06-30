@@ -16,23 +16,7 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					<select name="departmentId" id="departmentId" class="form-control form-control-border border-width-2"
-						@if (!Auth::user()->isAdmin()) disabled @endif
-						onchange="loadFilter(this)">
-						@if (Auth::user()->isAdmin())
-							<option value="">สาขาวิชา</option>
-							@foreach ($department as $key => $value)
-								<optgroup label="{{ $value->name }}">
-									@foreach ($value->departments as $key => $item)
-										<option value="{{ $item->id }}">{{ $item->name }}</option>
-									@endforeach
-								</optgroup>
-							@endforeach
-						@endif
-						@foreach ($department as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
+					@include('layouts._filter_department', ['department' => $department])
 				</div>
 				<div class="col-md-3">
 					<select name="locationId" id="locationId" class="form-control form-control-border border-width-2"
@@ -139,23 +123,23 @@
 	    'width': '5%',
 	    'className': 'text-center',
 	   },
-       {
+	   {
 	    'targets': [1],
 	    'width': '10%',
 	    'className': 'text-center',
 	   },
 	   {
-	    'targets': [2,3],
+	    'targets': [2, 3],
 	   },
 	   {
 	    'targets': [4],
 	    'width': '5%',
 	   },
 	   {
-	    'targets': [5, 6,7],
+	    'targets': [5, 6, 7],
 	   },
 	   {
-	    'targets': [8,9],
+	    'targets': [8, 9],
 	    'width': '10%',
 	    'className': 'text-center',
 	   },
@@ -168,7 +152,7 @@
 	  columns: [{
 	    data: 'DT_RowIndex'
 	   },
-       {
+	   {
 	    data: 'image'
 	   },
 	   {
