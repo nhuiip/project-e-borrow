@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -16,25 +16,13 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					@include('layouts._filter_department', ['department' => $department])
+					@include('layouts.component.filter._filter_department', ['department' => $department])
 				</div>
 				<div class="col-md-3">
-					<select name="locationId" id="locationId" class="form-control form-control-border border-width-2"
-						onchange="loadFilter(this)">
-						<option value="">ที่จัดเก็บ</option>
-						@foreach ($location as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
+					@include('layouts.component.filter._filter_location', ['location' => $location])
 				</div>
 				<div class="col-md-3">
-					<select name="statusId" id="statusId" class="form-control form-control-border border-width-2"
-						onchange="loadFilter(this)">
-						<option value="">สถานะ</option>
-						@foreach ($status as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
+					@include('layouts.component.filter._filter_status', ['status' => $status])
 				</div>
 			</div>
 		</div>
@@ -156,7 +144,6 @@
 	   {
 	    'targets': [8, 9],
 	    'width': '10%',
-	    'className': 'text-center',
 	   },
 	   {
 	    'targets': [10],

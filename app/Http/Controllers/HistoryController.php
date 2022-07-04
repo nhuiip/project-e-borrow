@@ -18,6 +18,7 @@ use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Carbon;
 
 class HistoryController extends Controller
 {
@@ -431,24 +432,24 @@ class HistoryController extends Controller
             })
             ->editColumn('created_at', function ($data) {
                 $user = User::findOrFail($data->created_userId);
-                return '<small>' . $user->name . '<br>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
+                return '<small>' . $user->name . '<br>' . thaidate('j F Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->created_at)) . '</small>';
             })
             ->editColumn('updated_at', function ($data) {
-                return '<small>' . date('d/m/Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->updated_at)) . '</small>';
+                return '<small>' . thaidate('j F Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->updated_at)) . '</small>';
             })
             ->editColumn('approved_at', function ($data) {
                 $label = "";
-                if ($data->statusId == HistoryStatus::Status_Approval) {
+                if ($data->approved_userId != null) {
                     $user = User::findOrFail($data->approved_userId);
-                    $label = '<small>' . $user->name . '<br>' . date('d/m/Y', strtotime($data->approved_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->approved_at)) . '</small>';
+                    $label = '<small>' . $user->name . '<br>' . thaidate('j F Y', strtotime($data->approved_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->approved_at)) . '</small>';
                 }
                 return $label;
             })
             ->editColumn('returned_at', function ($data) {
                 $label = "";
-                if ($data->statusId == HistoryStatus::Status_Returned) {
+                if ($data->returned_userId != null) {
                     $user = User::findOrFail($data->returned_userId);
-                    $label = '<small>' . $user->name . '<br>' . date('d/m/Y', strtotime($data->returned_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->returned_at)) . '</small>';
+                    $label = '<small>' . $user->name . '<br>' . thaidate('j F Y', strtotime($data->returned_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->returned_at)) . '</small>';
                 }
                 return $label;
             })
@@ -460,19 +461,25 @@ class HistoryController extends Controller
                 }
             })
             ->addColumn('image', function ($data) {
-                $html = '<img src="' . asset('img/no-image.jpeg') . '" alt="" class="img-responsive img-thumbnail" width="100%">';
+                $cover = asset('img/no-image.jpeg');
                 if ($data->parcelId != null) {
-                    $image = ParcelImage::where('parcelId', $data->parcelId)->first();
-                    if ($image != null) {
-                        $html = '<img src="' . asset('storage/ParcelImage/' . $image->name) . '" alt="" class="img-responsive img-thumbnail" width="100%">';
+
+                    if (ParcelImage::where('parcelId', $data->parcelId)->first() != null) {
+                        $cover = asset('storage/ParcelImage/' . ParcelImage::where('parcelId', $data->parcelId)->first()->name);
                     }
+                    $id = $data->parcelId;
+                    $image = ParcelImage::where('parcelId', $data->parcelId)->get();
+
+                    return view('parcel._image', compact('id', 'cover', 'image'));
                 } else {
-                    $image = DurableGoodsImage::where('durablegoodsId', $data->durablegoodsId)->first();
-                    if ($image != null) {
-                        $html = '<img src="' . asset('storage/DurableGoodsImage/' . $image->name) . '" alt="" class="img-responsive img-thumbnail" width="100%">';
+                    if (DurableGoodsImage::where('durablegoodsId', $data->durablegoodsId)->first() != null) {
+                        $cover = asset('storage/DurableGoodsImage/' . DurableGoodsImage::where('durablegoodsId', $data->durablegoodsId)->first()->name);
                     }
+                    $id = $data->durablegoodsId;
+                    $image = DurableGoodsImage::where('durablegoodsId', $data->durablegoodsId)->get();
+
+                    return view('durablegood._image', compact('id', 'cover', 'image'));
                 }
-                return $html;
             })
             ->addColumn('location_info', function ($data) {
                 if ($data->parcelId != null) {
@@ -486,6 +493,13 @@ class HistoryController extends Controller
             })
             ->addColumn('stock_unit', function ($data) {
                 return $data->parcelId != null ? $data->parcel->stock_unit : "";
+            })
+            ->addColumn('department_info', function ($data) {
+                if ($data->parcelId != null) {
+                    return $data->parcel->department->name . '<small><br><u>คณะ</u>: ' . $data->parcel->department->faculty->name . '</small>';
+                } else {
+                    return $data->durable_good->department->name . '<small><br><u>คณะ</u>: ' . $data->durable_good->department->faculty->name . '</small>';
+                }
             })
             ->addColumn('name', function ($data) {
                 return $data->parcelId != null ? $data->parcel->name : $data->durable_good->name;

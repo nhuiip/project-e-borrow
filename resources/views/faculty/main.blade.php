@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -133,7 +133,6 @@
 	</script>
 
 	<script>
-
 	 function fncAction(e) {
 	  let form = $(e).attr('data-form')
 	  let color = $(e).attr('data-color')

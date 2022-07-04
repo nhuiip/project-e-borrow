@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -16,16 +16,10 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					@include('layouts._filter_department', ['department' => $department])
+					@include('layouts.component.filter._filter_department', ['department' => $department])
 				</div>
 				<div class="col-md-3">
-					<select name="locationId" id="locationId" class="form-control form-control-border border-width-2"
-						onchange="loadFilter(this)">
-						<option value="">ที่จัดเก็บ</option>
-						@foreach ($location as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
+					@include('layouts.component.filter._filter_location', ['location' => $location])
 				</div>
 				<div class="col-md-3">
 					<input type="hidden" name="statusId" id="statusId" value="{{ $status->id }}">
@@ -50,7 +44,6 @@
 							<th>สาขาวิชา</th>
 							<th>ที่จัดเก็บ</th>
 							<th>เบิก</th>
-							<th>อนุมัติ</th>
 							<th class="text-center">จัดการ</th>
 						</tr>
 					</thead>
@@ -128,7 +121,7 @@
 	    'className': 'text-center',
 	   },
 	   {
-	    'targets': [8],
+	    'targets': [7],
 	    'width': '5%',
 	    'className': 'text-center',
 	   }
@@ -153,9 +146,6 @@
 	   },
 	   {
 	    data: 'created_at'
-	   },
-	   {
-	    data: 'approved_at'
 	   },
 	   {
 	    data: 'actions'

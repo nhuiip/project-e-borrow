@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -16,7 +16,7 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					@include('layouts._filter_department', ['department' => $department])
+					@include('layouts.component.filter._filter_department', ['department' => $department])
 				</div>
 			</div>
 		</div>

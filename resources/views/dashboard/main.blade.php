@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 @section('content')
 	<div class="row">
@@ -49,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12">
+		{{-- <div class="col-md-12">
 			<div class="card mt-3">
 				<div class="card-header">
 					<div class="row">
@@ -57,34 +58,16 @@
 							<h4 class="mt-1">ประวัติการทำรายการ</h4>
 						</div>
 						<div class="col-md-2">
-							@include('layouts._filter_department', ['department' => $department])
+							@include('layouts.component.filter._filter_department', ['department' => $department])
 						</div>
 						<div class="col-md-2">
-							<select name="locationId" id="locationId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="">ที่จัดเก็บ</option>
-								@foreach ($location as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+                            @include('layouts.component.filter._filter_location', ['location' => $location])
 						</div>
 						<div class="col-md-2">
-							<select name="typeId" id="typeId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="">ประเภท</option>
-								@foreach ($type as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+                             @include('layouts.component.filter._filter_type', ['type' => $type])
 						</div>
 						<div class="col-md-2">
-							<select name="statusId" id="statusId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="">สถานะ</option>
-								@foreach ($status as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+                            @include('layouts.component.filter._filter_status', ['status' => $status])
 						</div>
 					</div>
 				</div>
@@ -115,7 +98,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 @endsection
 

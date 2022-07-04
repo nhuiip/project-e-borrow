@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('content')
@@ -101,7 +101,7 @@
 		</div>
 	</div>
 	{!! Form::close() !!}
-    	@if (!empty($image))
+	@if (!empty($image))
 		<div class="row">
 			@foreach ($image as $key => $img)
 				<div class="col-sm-2">

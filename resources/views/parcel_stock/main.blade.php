@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -16,14 +16,8 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-                    <input type="hidden" name="parcelId" id="parcelId" value="{{ $parcel->id }}">
-					<select name="typeId" id="typeId" class="form-control form-control-border border-width-2"
-						onchange="loadFilter(this)">
-						<option value="">ประเภทรายการ</option>
-						@foreach ($stocktype as $key => $value)
-							<option value="{{ $value->id }}">{{ $value->name }}</option>
-						@endforeach
-					</select>
+					<input type="hidden" name="parcelId" id="parcelId" value="{{ $parcel->id }}">
+					@include('layouts.component.filter._filter_type', ['type' => $stocktype])
 				</div>
 			</div>
 		</div>
@@ -109,7 +103,8 @@
 	   url: $('#data-table').attr('data-url'),
 	   type: "GET",
 	   data: function(d) {
-	    d.parcelId = $('#parcelId').val();
+	    d.parcelId = $('#parcelId').val(),
+	     d.typeId = $('#typeId').val()
 	   },
 	  },
 	  ordering: false,
@@ -124,7 +119,7 @@
 	   {
 	    'targets': [2],
 	    'width': '10%',
-        'className': 'text-center',
+	    'className': 'text-center',
 	   },
 	   {
 	    'targets': [3],

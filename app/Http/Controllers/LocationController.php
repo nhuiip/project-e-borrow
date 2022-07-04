@@ -257,10 +257,10 @@ class LocationController extends Controller
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
             ->editColumn('created_at', function ($data) {
-                return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
+                return '<small>' . thaidate('j F Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->created_at)) . '</small>';
             })
             ->editColumn('updated_at', function ($data) {
-                return '<small>' . date('d/m/Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->updated_at)) . '</small>';
+                return '<small>' . thaidate('j F Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->updated_at)) . '</small>';
             })
             ->addColumn('department_name', function ($data) {
                 return $data->department->name . '<small><br><u>คณะ</u>: ' . $data->department->faculty->name . '</small>';

@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -16,7 +16,7 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-3">
-					@include('layouts._filter_department', ['department' => $department])
+					@include('layouts.component.filter._filter_department', ['department' => $department])
 				</div>
 				<div class="col-md-3">
 					<select name="roleId" id="roleId" class="form-control form-control-border border-width-2"
@@ -111,7 +111,7 @@
 	   action: function(e, dt, node, config) {
 	    location.href = $('#data-table').attr('data-create');
 	   }
-	  }],
+  }],
 	  ajax: {
 	   url: $('#data-table').attr('data-url'),
 	   type: "GET",
@@ -141,7 +141,6 @@
 	   {
 	    'targets': [5, 6],
 	    'width': '10%',
-	    'className': 'text-center',
 	   },
 	   {
 	    'targets': [7],

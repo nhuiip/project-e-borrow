@@ -231,6 +231,7 @@
 	<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 	<!-- Bootstrap 4 -->
 	<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
 
 	<script>
 	 $.ajaxSetup({
@@ -238,6 +239,7 @@
 	   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 	  }
 	 });
+     $('.filter-data').select2();
 	</script>
 	@yield('javascript')
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.5/dist/sweetalert2.all.min.js"></script>

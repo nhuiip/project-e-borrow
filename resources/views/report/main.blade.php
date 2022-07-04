@@ -2,7 +2,7 @@
 @if (!empty($breadcrumb))
 	@section('title', $breadcrumb[count($breadcrumb) - 1]['name'])
 	@section('breadcrumb')
-		@include('layouts._breadcrumb', ['breadcrumb' => $breadcrumb])
+		@include('layouts.component.breadcrumb._breadcrumb', ['breadcrumb' => $breadcrumb])
 	@endsection
 @endif
 @section('css')
@@ -33,34 +33,16 @@
 						</div>
 						<div class="col-md-2"></div>
 						<div class="col-md-2">
-							@include('layouts._filter_department', ['department' => $department])
+							@include('layouts.component.filter._filter_department', ['department' => $department])
 						</div>
 						<div class="col-md-2">
-							<select name="locationId" id="locationId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="0">ที่จัดเก็บ</option>
-								@foreach ($location as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+							@include('layouts.component.filter._filter_location', ['location' => $location])
 						</div>
 						<div class="col-md-1">
-							<select name="typeId" id="typeId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="0">ประเภท</option>
-								@foreach ($type as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+							@include('layouts.component.filter._filter_type', ['type' => $type])
 						</div>
 						<div class="col-md-1">
-							<select name="statusId" id="statusId" class="form-control form-control-border border-width-2"
-								onchange="loadFilter(this)">
-								<option value="0">สถานะ</option>
-								@foreach ($status as $key => $value)
-									<option value="{{ $value->id }}">{{ $value->name }}</option>
-								@endforeach
-							</select>
+							@include('layouts.component.filter._filter_status', ['status' => $status])
 						</div>
 					</div>
 				</div>
@@ -181,7 +163,7 @@
 	   }
 	  ],
 	  columns: [{
-	    data: 'reference'
+	    data: 'DT_RowIndex'
 	   },
 	   {
 	    data: 'history_type.name'

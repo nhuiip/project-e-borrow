@@ -101,7 +101,7 @@ class ParcelStockController extends Controller
             $stock_now->save();
         }
 
-        if($stock_now->stock > 0 && $stock_now->stock != ParcelStatus::Inactive){
+        if ($stock_now->stock > 0 && $stock_now->stock != ParcelStatus::Inactive) {
             $stock_now->statusId = ParcelStatus::Active;
             $stock_now->save();
         }
@@ -163,6 +163,7 @@ class ParcelStockController extends Controller
         $order = $request->get('order');
 
         $parcelId = $request->get('parcelId');
+        $typeId = $request->get('typeId');
 
 
         $columnorder = array(
@@ -188,6 +189,13 @@ class ParcelStockController extends Controller
                     }
                 });
             })
+            ->when($typeId, function ($query, $typeId) {
+                return $query->where(function ($query) use ($typeId) {
+                    if (!empty($typeId) && $typeId != 0) {
+                        $query->where('typeId', $typeId);
+                    }
+                });
+            })
             ->offset($start)
             ->limit($length)
             ->orderBy($sort, $dir)
@@ -202,6 +210,13 @@ class ParcelStockController extends Controller
                     }
                 });
             })
+            ->when($typeId, function ($query, $typeId) {
+                return $query->where(function ($query) use ($typeId) {
+                    if (!empty($typeId) && $typeId != 0) {
+                        $query->where('typeId', $typeId);
+                    }
+                });
+            })
             ->count();
 
         $recordsFiltered = ParcelStock::select('id')
@@ -209,6 +224,13 @@ class ParcelStockController extends Controller
                 return $query->where(function ($query) use ($parcelId) {
                     if (!empty($parcelId) && $parcelId != 0) {
                         $query->where('parcelId', $parcelId);
+                    }
+                });
+            })
+            ->when($typeId, function ($query, $typeId) {
+                return $query->where(function ($query) use ($typeId) {
+                    if (!empty($typeId) && $typeId != 0) {
+                        $query->where('typeId', $typeId);
                     }
                 });
             })
@@ -222,10 +244,10 @@ class ParcelStockController extends Controller
                 return str_pad($data->id, 5, "0", STR_PAD_LEFT);
             })
             ->editColumn('created_at', function ($data) {
-                return '<small>' . date('d/m/Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->created_at)) . '</small>';
+                return '<small>' . thaidate('j F Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->created_at)) . '</small>';
             })
             ->editColumn('updated_at', function ($data) {
-                return '<small>' . date('d/m/Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('h:i A', strtotime($data->updated_at)) . '</small>';
+                return '<small>' . thaidate('j F Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->updated_at)) . '</small>';
             })
             ->setTotalRecords($recordsTotal)
             ->setFilteredRecords($recordsFiltered)

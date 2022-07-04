@@ -70,7 +70,7 @@
 					@endphp
 					{{ $user->name }}
 				</td>
-				<td>{{ date('d/m/Y h:i A', strtotime($value->created_at)) }}</td>
+				<td>{{ thaidate('j F Y H:i:s', strtotime($value->created_at)) }}</td>
 				<td>
 					@if ($value->statusId == App\Models\HistoryStatus::Status_Approval)
 						@php
@@ -81,10 +81,10 @@
 				</td>
 				<td>
 					@if ($value->statusId == App\Models\HistoryStatus::Status_Approval)
-						{{ date('d/m/Y h:i A', strtotime($value->approved_at)) }}
+						{{ thaidate('j F Y H:i:s', strtotime($value->approved_at)) }}
 					@endif
 				</td>
-                <td>
+				<td>
 					@if ($value->statusId == App\Models\HistoryStatus::Status_Returned)
 						@php
 							$user = App\Models\User::findOrFail($value->returned_userId);
@@ -94,7 +94,7 @@
 				</td>
 				<td>
 					@if ($value->statusId == App\Models\HistoryStatus::Status_Returned)
-						{{ date('d/m/Y h:i A', strtotime($value->returned_at)) }}
+						{{ thaidate('j F Y H:i:s', strtotime($value->returned_at)) }}
 					@endif
 				</td>
 			</tr>

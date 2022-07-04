@@ -373,26 +373,28 @@ class DurableGoodController extends Controller
             ->editColumn('created_at', function ($data) {
                 $user = User::find($data->created_userId);
                 $username = $user != null ? $user->name : "";
-                return '<small>' . $username . '<br>' . date('d/m/Y', strtotime($data->created_at)) . ' ' . date('h:i A', strtotime($data->created_at)) . '</small>';
+                return '<small>' . $username . '<br>' . thaidate('j F Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->created_at)) . '</small>';
             })
             ->editColumn('updated_at', function ($data) {
                 $user = User::find($data->updated_userId);
                 $username = $user != null ? $user->name : "";
-                return '<small>' . $username . '<br>' . date('d/m/Y', strtotime($data->updated_at)) . ' ' . date('h:i A', strtotime($data->updated_at)) . '</small>';
-            })
-            ->addColumn('image', function ($data) {
-                $html = '<img src="' . asset('img/no-image.jpeg') . '" alt="" class="img-responsive img-thumbnail" width="100%">';
-                $image = DurableGoodsImage::where('durablegoodsId', $data->id)->first();
-                if ($image != null) {
-                    $html = '<img src="' . asset('storage/DurableGoodsImage/' . $image->name) . '" alt="" class="img-responsive img-thumbnail" width="100%">';
-                }
-                return $html;
+                return '<small>' . $username . '<br>' . thaidate('j F Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->updated_at)) . '</small>';
             })
             ->addColumn('department_info', function ($data) {
                 return $data->department->name . '<small><br><u>คณะ</u>: ' . $data->department->faculty->name . '</small>';
             })
             ->addColumn('location_info', function ($data) {
                 return $data->location->name . '<small><br><u>คณะ</u>: ' . $data->department->faculty->name . '</small><small><br><u>สาขา</u>: ' . $data->department->name . '</small>';
+            })
+            ->addColumn('image', function ($data) {
+                $id = $data->id;
+                $cover = asset('img/no-image.jpeg');
+                if (DurableGoodsImage::where('durablegoodsId', $data->id)->first() != null) {
+                    $cover = asset('storage/DurableGoodsImage/' . DurableGoodsImage::where('durablegoodsId', $data->id)->first()->name);
+                }
+                $image = DurableGoodsImage::where('durablegoodsId', $data->id)->get();
+
+                return view('durablegood._image', compact('id', 'cover', 'image'));
             })
             ->addColumn('actions', function ($data) {
                 $id = $data->id;
@@ -518,26 +520,28 @@ class DurableGoodController extends Controller
             ->editColumn('created_at', function ($data) {
                 $user = User::find($data->created_userId);
                 $username = $user != null ? $user->name : "";
-                return '<small>' . $username . '<br>' . date('d/m/Y', strtotime($data->created_at)) . ' ' . date('h:i A', strtotime($data->created_at)) . '</small>';
+                return '<small>' . $username . '<br>' . thaidate('j F Y', strtotime($data->created_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->created_at)) . '</small>';
             })
             ->editColumn('updated_at', function ($data) {
                 $user = User::find($data->updated_userId);
                 $username = $user != null ? $user->name : "";
-                return '<small>' . $username . '<br>' . date('d/m/Y', strtotime($data->updated_at)) . ' ' . date('h:i A', strtotime($data->updated_at)) . '</small>';
-            })
-            ->addColumn('image', function ($data) {
-                $html = '<img src="' . asset('img/no-image.jpeg') . '" alt="" class="img-responsive img-thumbnail" width="100%">';
-                $image = DurableGoodsImage::where('durablegoodsId', $data->id)->first();
-                if ($image != null) {
-                    $html = '<img src="' . asset('storage/DurableGoodsImage/' . $image->name) . '" alt="" class="img-responsive img-thumbnail" width="100%">';
-                }
-                return $html;
+                return '<small>' . $username . '<br>' . thaidate('j F Y', strtotime($data->updated_at)) . '<br><i class="far fa-clock"></i> ' . date('H:i:s', strtotime($data->updated_at)) . '</small>';
             })
             ->addColumn('department_info', function ($data) {
                 return $data->department->name . '<small><br><u>คณะ</u>: ' . $data->department->faculty->name . '</small>';
             })
             ->addColumn('location_info', function ($data) {
                 return $data->location->name . '<small><br><u>คณะ</u>: ' . $data->department->faculty->name . '</small><small><br><u>สาขา</u>: ' . $data->department->name . '</small>';
+            })
+            ->addColumn('image', function ($data) {
+                $id = $data->id;
+                $cover = asset('img/no-image.jpeg');
+                if (DurableGoodsImage::where('durablegoodsId', $data->id)->first() != null) {
+                    $cover = asset('storage/DurableGoodsImage/' . DurableGoodsImage::where('durablegoodsId', $data->id)->first()->name);
+                }
+                $image = DurableGoodsImage::where('durablegoodsId', $data->id)->get();
+
+                return view('durablegood._image', compact('id', 'cover', 'image'));
             })
             ->addColumn('actions', function ($data) {
                 $id = $data->id;

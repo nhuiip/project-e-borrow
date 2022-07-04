@@ -2,7 +2,7 @@
 	@if (!Auth::user()->isAdmin()) disabled @endif
 	onchange="loadFilter(this)">
 	@if (Auth::user()->isAdmin())
-		<option value="">สาขาวิชา</option>
+		<option value="0">สาขาวิชา</option>
 		@foreach ($department as $key => $value)
 			<optgroup label="{{ $value->name }}">
 				@foreach ($value->departments as $key => $item)
