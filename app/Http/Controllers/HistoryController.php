@@ -125,10 +125,11 @@ class HistoryController extends Controller
             $this->validate(
                 $request,
                 [
-                    'unit' => 'required|numeric|max:' . $stock_now->stock,
+                    'unit' => 'required|numeric|min:1|max:' . $stock_now->stock,
                 ],
                 [
                     'unit.required' => 'กรุณากรอกจำนวน',
+                    'unit.min' => 'สามารถเบิกของออกได้อย่างน้อย 1 ชิ้น',
                     'unit.max' => 'สามารถเบิกของออกได้ไม่เกิน ' . $stock_now->stock . ' ' . $stock_now->stock_unit,
                 ]
             );
