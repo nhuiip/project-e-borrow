@@ -23,33 +23,109 @@ class DashboardController extends Controller
         $breadcrumb = [
             ['route' => route('dashboard.index'), 'name' => 'สรุปผลภาพรวม'],
         ];
+        $departmentId = Auth::user()->departmentId;
         $durable_goods = (object)array(
             'count' => DurableGood::all()->count(),
             'status' => array(
                 DurableGoodsStatus::Inactive => array(
                     'label'  => DurableGoodsStatus::statuslabel(DurableGoodsStatus::Inactive),
-                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Inactive)->get()->count(),
-                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Inactive)->get()->count() * 100) / DurableGood::all()->count() : 100
+                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Inactive)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Inactive)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / DurableGood::all()->count() : 100
                 ),
                 DurableGoodsStatus::Defective => array(
                     'label'  => DurableGoodsStatus::statuslabel(DurableGoodsStatus::Defective),
-                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Defective)->get()->count(),
-                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Defective)->get()->count() * 100) / DurableGood::all()->count() : 100
+                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Defective)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Defective)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / DurableGood::all()->count() : 100
                 ),
                 DurableGoodsStatus::Active => array(
                     'label'  => DurableGoodsStatus::statuslabel(DurableGoodsStatus::Active),
-                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Active)->get()->count(),
-                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Active)->get()->count() * 100) / DurableGood::all()->count() : 100
+                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Active)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Active)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / DurableGood::all()->count() : 100
                 ),
                 DurableGoodsStatus::Pending_Approval => array(
                     'label'  => DurableGoodsStatus::statuslabel(DurableGoodsStatus::Pending_Approval),
-                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Pending_Approval)->get()->count(),
-                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Pending_Approval)->get()->count() * 100) / DurableGood::all()->count() : 100
+                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Pending_Approval)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Pending_Approval)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / DurableGood::all()->count() : 100
                 ),
                 DurableGoodsStatus::Waiting_Return => array(
                     'label'  => DurableGoodsStatus::statuslabel(DurableGoodsStatus::Waiting_Return),
-                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Waiting_Return)->get()->count(),
-                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Waiting_Return)->get()->count() * 100) / DurableGood::all()->count() : 100
+                    'count'  => DurableGood::where('statusId', DurableGoodsStatus::Waiting_Return)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => DurableGood::all()->count() != 0 ? (DurableGood::where('statusId', DurableGoodsStatus::Waiting_Return)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / DurableGood::all()->count() : 100
                 ),
             )
         );
@@ -59,18 +135,62 @@ class DashboardController extends Controller
             'status' => array(
                 ParcelStatus::Inactive => array(
                     'label'  => ParcelStatus::statuslabel(ParcelStatus::Inactive),
-                    'count'  => Parcel::where('statusId', ParcelStatus::Inactive)->get()->count(),
-                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Inactive)->get()->count() * 100) / Parcel::all()->count() : 100
+                    'count'  => Parcel::where('statusId', ParcelStatus::Inactive)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Inactive)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / Parcel::all()->count() : 100
                 ),
                 ParcelStatus::Out_Of_Stock => array(
                     'label'  => ParcelStatus::statuslabel(ParcelStatus::Out_Of_Stock),
-                    'count'  => Parcel::where('statusId', ParcelStatus::Out_Of_Stock)->get()->count(),
-                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Out_Of_Stock)->get()->count() * 100) / Parcel::all()->count() : 100
+                    'count'  => Parcel::where('statusId', ParcelStatus::Out_Of_Stock)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Out_Of_Stock)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()->count() * 100
+                    ) / Parcel::all()->count() : 100
                 ),
                 ParcelStatus::Active => array(
                     'label'  => ParcelStatus::statuslabel(ParcelStatus::Active),
-                    'count'  => Parcel::where('statusId', ParcelStatus::Active)->get()->count(),
-                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Active)->get()->count() * 100) / Parcel::all()->count() : 100
+                    'count'  => Parcel::where('statusId', ParcelStatus::Active)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count(),
+                    'preset' => Parcel::all()->count() != 0 ? (Parcel::where('statusId', ParcelStatus::Active)
+                        ->when($departmentId, function ($query, $departmentId) {
+                            if (!empty($departmentId) && $departmentId != 0) {
+                                $query->where('departmentId', $departmentId);
+                            }
+                        })
+                        ->get()
+                        ->count() * 100
+                    ) / Parcel::all()->count() : 100
                 ),
             )
         );
