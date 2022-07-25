@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 @endsection
 @section('content')
 	<div class="row">
@@ -26,7 +26,27 @@
 							<div class="progress-bar bg-info" style="width: {{ $value['preset'] }}%"></div>
 						</div>
 						<span class="progress-description">
-							{{ $value['label'] }}: {{ $value['count'] }} รายการ
+							@if ($value['label'] ==
+							    App\Models\DurableGoodsStatus::statuslabel(App\Models\DurableGoodsStatus::Pending_Approval))
+								@can('approve return')
+									{{ $value['label'] }}:
+									<a href="{{ route('history.durablegood_approve') }}"><u>{{ $value['count'] }} รายการ</u></a>
+								@endcan
+								@cannot('approve return')
+									{{ $value['label'] }}: {{ $value['count'] }} รายการ
+								@endcannot
+							@elseif ($value['label'] == App\Models\DurableGoodsStatus::statuslabel(App\Models\DurableGoodsStatus::Waiting_Return))
+								@can('approve return')
+									{{ $value['label'] }}:
+									<a href="{{ route('history.durablegood_return') }}"><u>{{ $value['count'] }} รายการ</u></a>
+								@endcan
+								@cannot('approve return')
+									{{ $value['label'] }}: {{ $value['count'] }} รายการ
+								@endcannot
+							@else
+								{{ $value['label'] }}: {{ $value['count'] }} รายการ
+							@endif
+
 						</span>
 					@endforeach
 				</div>
